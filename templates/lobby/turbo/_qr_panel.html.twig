@@ -1,0 +1,11 @@
+{% if game.full %}
+    <div class="empty-state" style="margin: 0;">Lobby complet</div>
+{% else %}
+    <div class="qr-card">
+        <img src="{{ path('lobby_qr', {code: game.code}) }}" alt="QR Code" width="280" height="280">
+    </div>
+    <div style="text-align: center;">
+        <div class="info-label">Scanner pour rejoindre</div>
+        <div class="info-url">{{ url('lobby_join', {code: game.code}) }}</div>
+    </div>
+{% endif %}

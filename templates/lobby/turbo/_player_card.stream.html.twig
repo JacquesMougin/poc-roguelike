@@ -1,0 +1,35 @@
+{% if action == 'append' %}
+    {% if player.game.players|length == 1 %}
+<turbo-stream action="replace" target="lobby-main">
+    <template>{% include 'lobby/turbo/_lobby_main.html.twig' with {game: player.game} %}</template>
+</turbo-stream>
+    {% else %}
+<turbo-stream action="replace" target="qr-panel">
+    <template>{% include 'lobby/turbo/_qr_panel.html.twig' with {game: player.game} %}</template>
+</turbo-stream>
+<turbo-stream action="append" target="players-list">
+    <template>{% include 'lobby/turbo/_player_card.html.twig' with {player: player} %}</template>
+</turbo-stream>
+    {% endif %}
+<turbo-stream action="replace" target="player-count">
+    <template>{% include 'lobby/turbo/_player_count.html.twig' with {game: player.game} %}</template>
+</turbo-stream>
+{% elseif action == 'remove' %}
+    {% if player.game.players|length == 0 %}
+<turbo-stream action="replace" target="lobby-main">
+    <template>{% include 'lobby/turbo/_lobby_main.html.twig' with {game: player.game} %}</template>
+</turbo-stream>
+    {% else %}
+<turbo-stream action="remove" target="player-{{ player.id }}"></turbo-stream>
+<turbo-stream action="replace" target="qr-panel">
+    <template>{% include 'lobby/turbo/_qr_panel.html.twig' with {game: player.game} %}</template>
+</turbo-stream>
+<turbo-stream action="replace" target="player-count">
+    <template>{% include 'lobby/turbo/_player_count.html.twig' with {game: player.game} %}</template>
+</turbo-stream>
+    {% endif %}
+{% else %}
+<turbo-stream action="replace" target="player-{{ player.id }}">
+    <template>{% include 'lobby/turbo/_player_card.html.twig' with {player: player} %}</template>
+</turbo-stream>
+{% endif %}

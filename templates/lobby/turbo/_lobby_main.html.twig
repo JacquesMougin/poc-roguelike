@@ -1,0 +1,5 @@
+{% if game.players|length == 0 %}
+    {% include 'lobby/turbo/_lobby_empty.html.twig' with {game: game} %}
+{% else %}
+    {% include 'lobby/turbo/_lobby_active.html.twig' with {game: game} %}
+{% endif %}

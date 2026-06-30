@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rejoindre — {{ game.code }}{% endblock %}
+
+{% block body %}
+<div class="mobile-shell">
+    <div class="mobile-shell__top">
+        <div class="info-label">Partie</div>
+        <div class="game-code game-code--lg">{{ game.code }}</div>
+    </div>
+
+    <div class="mobile-shell__main">
+        {% if game.full %}
+            <div class="empty-state">Lobby complet ({{ constant('App\\Entity\\Game::MAX_PLAYERS') }}/{{ constant('App\\Entity\\Game::MAX_PLAYERS') }})</div>
+        {% else %}
+            <h1 style="text-align: center; margin-bottom: 0.5rem;">Choisis ton pseudo</h1>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Tu rejoins la partie en tant que héros</p>
+            <form method="post" action="{{ path('lobby_join_post', {code: game.code}) }}" class="stack">
+                <input
+                    class="form-input form-input--lg"
+                    type="text"
+                    name="name"
+                    placeholder="Ton pseudo"
+                    maxlength="30"
+                    required
+                    autofocus
+                    autocomplete="off"
+                >
+                <button type="submit" class="btn btn--primary btn--lg">Rejoindre</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

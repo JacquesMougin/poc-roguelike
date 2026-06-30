@@ -1,0 +1,6 @@
+<div id="player-{{ player.id }}" class="player-card{{ player.ready ? ' player-card--ready' : '' }}">
+    <span class="player-name">{{ player.name }}</span>
+    <span class="player-status {{ player.ready ? 'player-status--ready' : 'player-status--waiting' }}">
+        {{ player.ready ? '✓ Prêt' : 'En attente' }}
+    </span>
+</div>

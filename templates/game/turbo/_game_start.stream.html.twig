@@ -1,0 +1,26 @@
+<turbo-stream action="replace" target="lobby-main">
+    <template>
+        <div id="lobby-main"
+             data-controller="countdown"
+             data-countdown-url-value="{{ playUrl }}"
+             style="flex: 1; display: flex;">
+            <div class="countdown-overlay">
+                <span class="countdown-number" data-countdown-target="display"></span>
+                <p class="countdown-label">La partie commence...</p>
+            </div>
+        </div>
+    </template>
+</turbo-stream>
+<turbo-stream action="replace" target="game-phase">
+    <template>
+        <div id="game-phase"
+             class="mobile-shell"
+             data-controller="countdown"
+             data-countdown-url-value="{{ playUrl }}">
+            <div class="countdown-overlay">
+                <span class="countdown-number" data-countdown-target="display"></span>
+                <p class="countdown-label">La partie commence...</p>
+            </div>
+        </div>
+    </template>
+</turbo-stream>

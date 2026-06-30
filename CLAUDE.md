@@ -106,7 +106,7 @@ Exemples :
 Turbo Streams est utilisé avec Mercure grâce à :
 
 ```twig
-{{ turbo_stream_listen('game/' ~ game.id ~ '/players') }}
+{{ turbo_stream_from('game/' ~ game.id ~ '/players') }}
 ```
 
 Le desktop s'abonne à un topic Mercure et applique automatiquement les Turbo Streams reçus.
@@ -219,3 +219,61 @@ Mercure synchronise les clients.
 Symfony reste toujours la source de vérité.
 
 Le projet cherche à explorer les capacités de Symfony UX sans tomber dans une SPA complète.
+
+---
+
+
+## Conventions PHP
+
+- `declare(strict_types=1)` sur chaque fichier
+- Tout est typé — pas de `mixed` sans justification, pas d'`array` nu
+- `readonly` dès que la donnée est immuable
+- `enum` plutôt que constantes, `match` plutôt que `switch`
+- Guard clauses, responsabilité unique, méthodes courtes
+- PSR-12
+
+## Conventions Symfony
+
+- Autowiring partout, services stateless
+- Attributs PHP natifs (`#[Route]`, `#[AsEventListener]`...) — jamais YAML/XML pour le code
+- Controllers minces — la logique est dans les services
+- Doctrine : mapping par attributs, migrations obligatoires, jamais `schema:update`
+
+<!-- code-review-graph MCP tools -->
+## MCP Tools: code-review-graph
+
+**IMPORTANT: This project has a knowledge graph. ALWAYS use the
+code-review-graph MCP tools BEFORE using Grep/Glob/Read to explore
+the codebase.** The graph is faster, cheaper (fewer tokens), and gives
+you structural context (callers, dependents, test coverage) that file
+scanning cannot.
+
+### When to use graph tools FIRST
+
+- **Exploring code**: `semantic_search_nodes` or `query_graph` instead of Grep
+- **Understanding impact**: `get_impact_radius` instead of manually tracing imports
+- **Code review**: `detect_changes` + `get_review_context` instead of reading entire files
+- **Finding relationships**: `query_graph` with callers_of/callees_of/imports_of/tests_for
+- **Architecture questions**: `get_architecture_overview` + `list_communities`
+
+Fall back to Grep/Glob/Read **only** when the graph doesn't cover what you need.
+
+### Key Tools
+
+| Tool | Use when |
+| ------ | ---------- |
+| `detect_changes` | Reviewing code changes — gives risk-scored analysis |
+| `get_review_context` | Need source snippets for review — token-efficient |
+| `get_impact_radius` | Understanding blast radius of a change |
+| `get_affected_flows` | Finding which execution paths are impacted |
+| `query_graph` | Tracing callers, callees, imports, tests, dependencies |
+| `semantic_search_nodes` | Finding functions/classes by name or keyword |
+| `get_architecture_overview` | Understanding high-level codebase structure |
+| `refactor_tool` | Planning renames, finding dead code |
+
+### Workflow
+
+1. The graph auto-updates on file changes (via hooks).
+2. Use `detect_changes` for code review.
+3. Use `get_affected_flows` to understand impact.
+4. Use `query_graph` pattern="tests_for" to check coverage.

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}En attente...{% endblock %}
+
+{% block body %}
+{% if playUrl is defined %}
+    <div id="game-phase"
+         class="mobile-shell"
+         data-controller="countdown"
+         data-countdown-url-value="{{ playUrl }}">
+        <div class="countdown-overlay">
+            <span class="countdown-number" data-countdown-target="display"></span>
+            <p class="countdown-label">La partie commence...</p>
+        </div>
+    </div>
+{% else %}
+    {{ turbo_stream_from('game/' ~ game.code ~ '/phase') }}
+    <div class="mobile-shell" id="game-phase">
+        <div class="mobile-shell__top">
+            <div class="info-label">Partie</div>
+            <div class="game-code game-code--lg">{{ game.code }}</div>
+        </div>
+
+        <div class="mobile-shell__main" style="text-align: center;">
+            <p class="info-label">Bienvenue</p>
+            <h1 style="font-size: 2.2rem; margin-bottom: 1.5rem;">{{ player.name }}</h1>
+
+            <div class="status-banner{{ player.ready ? ' status-banner--ready' : '' }}">
+                <span class="status-dot"></span>
+                {{ player.ready ? 'Prêt, en attente des autres...' : "En attente du lancement depuis l'écran principal..." }}
+            </div>
+        </div>
+
+        <div class="mobile-shell__bottom">
+            <form method="post" action="{{ path('lobby_ready', {code: game.code, id: player.id}) }}">
+                <button type="submit" class="btn btn--ready btn--lg{{ player.ready ? ' is-ready' : '' }}">
+                    {{ player.ready ? '✓ Je suis prêt' : 'Je suis prêt ?' }}
+                </button>
+            </form>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

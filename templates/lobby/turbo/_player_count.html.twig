@@ -1,0 +1,3 @@
+<p id="player-count" style="color: var(--text-muted); margin-top: 0.25rem; font-size: 0.9rem;">
+    {{ game.players|length }} / {{ constant('App\\Entity\\Game::MAX_PLAYERS') }} joueur{{ game.players|length != 1 ? 's' : '' }} connecté{{ game.players|length != 1 ? 's' : '' }}
+</p>

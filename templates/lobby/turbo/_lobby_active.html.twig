@@ -1,0 +1,15 @@
+<div class="lobby-split">
+    <div class="lobby-split__players">
+        <div class="section-title">
+            {% include 'lobby/turbo/_player_count.html.twig' with {game: game} %}
+        </div>
+        <div id="players-list">
+            {% for player in game.players %}
+                {% include 'lobby/turbo/_player_card.html.twig' with {player: player} %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="lobby-split__qr" id="qr-panel">
+        {% include 'lobby/turbo/_qr_panel.html.twig' with {game: game} %}
+    </div>
+</div>

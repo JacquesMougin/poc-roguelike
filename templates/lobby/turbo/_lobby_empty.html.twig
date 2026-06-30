@@ -1,0 +1,9 @@
+<div class="lobby-empty">
+    <div class="qr-card qr-card--lg">
+        <img src="{{ path('lobby_qr', {code: game.code}) }}" alt="QR Code" width="360" height="360">
+    </div>
+    <div style="text-align: center;">
+        <div class="info-label">Scanner pour rejoindre</div>
+        <div class="info-url">{{ url('lobby_join', {code: game.code}) }}</div>
+    </div>
+</div>

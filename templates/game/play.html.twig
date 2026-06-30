@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Partie — {{ game.code }}{% endblock %}
+
+{% block body %}
+<div class="page-center">
+    <div style="text-align: center;">
+        <p class="info-label">Partie en cours</p>
+        <div class="game-code" style="margin-bottom: 2rem;">{{ game.code }}</div>
+        <h1 style="margin-bottom: 1rem;">La partie commence !</h1>
+        <p style="color: var(--text-muted);">{{ game.players|length }} héros prêts à l'aventure.</p>
+    </div>
+</div>
+{% endblock %}

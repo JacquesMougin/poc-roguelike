@@ -22,9 +22,41 @@ services:
       # See https://xdebug.org/docs/all_settings#mode
       XDEBUG_MODE: "${XDEBUG_MODE:-develop}"
       APP_ENV: "${APP_ENV:-dev}"
+      # Keep automatic HTTPS for localhost, but stop Caddy from redirecting
+      # ANY Host header on :80 to HTTPS — that catch-all redirect is what
+      # loops forever with ngrok (which already terminates TLS itself and
+      # forwards plain HTTP locally).
+      CADDY_GLOBAL_OPTIONS: "auto_https disable_redirects"
+      # Add a plain-HTTP catch-all (":80") so requests with a foreign Host
+      # header (e.g. the ngrok subdomain) still get served instead of 404.
+      SERVER_NAME: "localhost, php:80, :80"
+      # Relative path instead of a hardcoded "https://localhost" — the
+      # browser resolves it against the page's own origin, so the Mercure
+      # EventSource subscription works whether the page was loaded via
+      # localhost, the LAN IP, or an ngrok tunnel.
+      # (Must override the final MERCURE_PUBLIC_URL directly: the
+      # ${CADDY_MERCURE_PUBLIC_URL} placeholder in compose.yaml is
+      # interpolated by the docker compose CLI from the host/.env
+      # environment, not from this container's `environment:` map.)
+      MERCURE_PUBLIC_URL: "/.well-known/mercure"
     extra_hosts:
       # Ensure that host.docker.internal is correctly defined on Linux
       - host.docker.internal:host-gateway
     tty: true
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
+
+###> doctrine/doctrine-bundle ###
+  database:
+    ports:
+      - "5432"
+###< doctrine/doctrine-bundle ###
+
+  adminer:
+    image: adminer
+    environment:
+      ADMINER_DEFAULT_SERVER: database
+    ports:
+      - "8081:8080"
+    depends_on:
+      - database
